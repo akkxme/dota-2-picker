@@ -1,0 +1,153 @@
+/* Global styles and Dota 2 theme */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 10, 10, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.5);
+}
+
+/* Scrollbar for Firefox */
+* {
+  scrollbar-color: rgba(212, 175, 55, 0.3) rgba(10, 10, 10, 0.5);
+  scrollbar-width: thin;
+}
+
+/* Global Body */
+body {
+  @apply bg-dota-darker text-white font-sans antialiased;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(137, 45, 45, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+}
+
+/* Text selections */
+::selection {
+  @apply bg-dota-red text-dota-gold;
+}
+
+/* Links */
+a {
+  @apply text-dota-gold hover:text-white transition-colors duration-200;
+}
+
+/* Buttons */
+button {
+  @apply transition-all duration-200;
+}
+
+/* Inputs */
+input,
+textarea {
+  @apply transition-colors duration-200;
+}
+
+input:focus,
+textarea:focus {
+  @apply outline-none;
+}
+
+/* Animations */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.shimmer {
+  animation: shimmer 2s infinite;
+  background-size: 1000px 100%;
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-dota-gold to-red-400 bg-clip-text text-transparent;
+}
+
+/* Glow text effect */
+.text-glow {
+  @apply text-dota-gold drop-shadow-lg;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-dota-gold/50;
+}
+
+/* Dark overlay */
+.dark-overlay {
+  @apply bg-black/40 backdrop-blur-sm;
+}
+
+/* Smooth scrollbar for Firefox */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-dota-gold\/30 {
+  scrollbar-color: rgba(212, 175, 55, 0.3);
+}
+
+.scrollbar-track-transparent {
+  scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+}
