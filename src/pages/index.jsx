@@ -234,8 +234,8 @@ export default function Home() {
 
             {/* Info Cards - When no recommendations */}
             {!recommendations && (
-              <motion.section variants={itemVariants} className="grid md:grid-cols-3 gap-6">
-                <div className="p-6 rounded-lg border border-dota-gold/30 bg-dota-gray/50 backdrop-blur-sm">
+              <motion.section variants={itemVariants} className="grid md:grid-cols-3 gap-6 mt-8 pointer-events-none">
+                <div className="p-6 rounded-lg border border-dota-gold/30 bg-dota-gray/50 backdrop-blur-sm pointer-events-auto">
                   <h3 className="text-dota-gold font-bold mb-2 flex items-center gap-2">
                     <span>🎯</span> How It Works
                   </h3>
@@ -243,7 +243,7 @@ export default function Home() {
                     Select enemy heroes, and our AI will analyze matchups to recommend your best counterpicks.
                   </p>
                 </div>
-                <div className="p-6 rounded-lg border border-dota-gold/30 bg-dota-gray/50 backdrop-blur-sm">
+                <div className="p-6 rounded-lg border border-dota-gold/30 bg-dota-gray/50 backdrop-blur-sm pointer-events-auto">
                   <h3 className="text-dota-gold font-bold mb-2 flex items-center gap-2">
                     <span>💬</span> Ask Anything
                   </h3>
@@ -251,7 +251,7 @@ export default function Home() {
                     Use the chat bubble to ask follow-up questions about heroes, items, and strategies.
                   </p>
                 </div>
-                <div className="p-6 rounded-lg border border-dota-gold/30 bg-dota-gray/50 backdrop-blur-sm">
+                <div className="p-6 rounded-lg border border-dota-gold/30 bg-dota-gray/50 backdrop-blur-sm pointer-events-auto">
                   <h3 className="text-dota-gold font-bold mb-2 flex items-center gap-2">
                     <span>⚡</span> Instant Analysis
                   </h3>

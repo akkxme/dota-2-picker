@@ -89,7 +89,7 @@ export default function HeroSelector({ selectedHeroes, onSelect, onRemove }) {
       </motion.div>
 
       {/* Dropdown Selector */}
-      <div ref={dropdownRef} className="relative">
+      <div ref={dropdownRef} className="relative z-50">
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.02 }}
@@ -124,7 +124,7 @@ export default function HeroSelector({ selectedHeroes, onSelect, onRemove }) {
               animate="visible"
               exit="exit"
               className="
-                absolute top-full left-0 right-0 mt-2 z-50
+                absolute top-full left-0 right-0 mt-2 z-[9999]
                 bg-dota-gray border-2 border-dota-gold/50
                 rounded-lg overflow-hidden shadow-2xl shadow-black/50
               "

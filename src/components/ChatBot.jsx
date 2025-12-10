@@ -3,6 +3,138 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { askAI } from '../utils/openrouter';
 
+// Helper function to parse and render markdown content
+function renderMarkdownContent(content) {
+  // Check if content contains a markdown table
+  const tableRegex = /\|.*\|[\s\S]*?\|.*\|/;
+  
+  if (tableRegex.test(content)) {
+    const parts = content.split(/(\|.*\|[\s\S]*?\|.*\|)/);
+    
+    return parts.map((part, idx) => {
+      if (part.trim().startsWith('|') && part.includes('\n')) {
+        // Parse table
+        const lines = part.trim().split('\n').filter(line => line.trim());
+        const rows = [];
+        let isHeader = true;
+        
+        for (const line of lines) {
+          // Skip separator lines
+          if (line.includes('---')) continue;
+          
+          const cells = line.split('|').filter(cell => cell.trim());
+          rows.push({ cells, isHeader });
+          isHeader = false;
+        }
+        
+        return (
+          <div key={idx} className="my-4 overflow-x-auto">
+            <table className="w-full border-collapse bg-dota-gray/50 border border-dota-gold/30">
+              <tbody>
+                {rows.map((row, rowIdx) => (
+                  <tr key={rowIdx} className={row.isHeader ? 'bg-dota-red/50' : 'hover:bg-dota-red/20'}>
+                    {row.cells.map((cell, cellIdx) => (
+                      <td
+                        key={cellIdx}
+                        className={`border border-dota-gold/20 px-3 py-2 text-sm ${
+                          row.isHeader 
+                            ? 'font-bold text-dota-gold' 
+                            : 'text-gray-200'
+                        }`}
+                      >
+                        {cell.trim()}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        );
+      } else if (part.trim()) {
+        return <p key={idx} className="text-gray-300 leading-relaxed mb-2 whitespace-pre-wrap">{renderText(part)}</p>;
+      }
+      return null;
+    });
+  }
+  
+  // No table, just render text
+  return <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">{renderText(content)}</div>;
+}
+
+// Helper to render text with markdown formatting
+function renderText(text) {
+  const lines = text.split('\n');
+  
+  return lines.map((line, lineIdx) => {
+    if (!line.trim()) {
+      return <br key={lineIdx} />;
+    }
+
+    // Parse markdown in the line
+    const elements = [];
+    let lastIndex = 0;
+    
+    // Combined regex for bold and italic
+    const markdownRegex = /\*\*(.*?)\*\*|\*(.*?)\*/g;
+    let match;
+    
+    while ((match = markdownRegex.exec(line)) !== null) {
+      // Add text before the match
+      if (match.index > lastIndex) {
+        elements.push(
+          <span key={`text-${lastIndex}`}>
+            {line.substring(lastIndex, match.index)}
+          </span>
+        );
+      }
+      
+      // Add bold or italic
+      if (match[1] !== undefined) {
+        // Bold text (**text**)
+        elements.push(
+          <strong key={`bold-${match.index}`} className="text-dota-gold font-bold">
+            {match[1]}
+          </strong>
+        );
+      } else if (match[2] !== undefined) {
+        // Italic text (*text*)
+        elements.push(
+          <em key={`italic-${match.index}`} className="text-yellow-300 italic">
+            {match[2]}
+          </em>
+        );
+      }
+      
+      lastIndex = markdownRegex.lastIndex;
+    }
+    
+    // Add remaining text
+    if (lastIndex < line.length) {
+      elements.push(
+        <span key={`text-end-${lineIdx}`}>
+          {line.substring(lastIndex)}
+        </span>
+      );
+    }
+    
+    // If no markdown found, just return the line
+    if (elements.length === 0) {
+      return (
+        <span key={lineIdx}>
+          {line}
+        </span>
+      );
+    }
+    
+    return (
+      <div key={lineIdx} className="mb-2">
+        {elements}
+      </div>
+    );
+  });
+}
+
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -212,13 +344,13 @@ export default function ChatBot() {
                   >
                     <div
                       className={`
-                        max-w-xs px-3 py-2 rounded-lg text-sm leading-relaxed
+                        max-w-2xl px-4 py-3 rounded-lg text-sm leading-relaxed
                         ${msg.role === 'user'
                           ? 'bg-dota-red text-white rounded-br-none'
                           : 'bg-dota-red/30 text-gray-200 rounded-bl-none border border-dota-gold/30'}
                       `}
                     >
-                      {msg.content}
+                      {renderMarkdownContent(msg.content)}
                     </div>
                   </motion.div>
                 ))}
